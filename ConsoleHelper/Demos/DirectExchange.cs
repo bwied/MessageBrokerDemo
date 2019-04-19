@@ -6,12 +6,7 @@ namespace ConsoleHelper.Demos
 {
     public class DirectExchange
     {
-        private readonly string _exchangeName;
-
-        public DirectExchange(string exchangeName)
-        {
-            _exchangeName = exchangeName;
-        }
+        private readonly string _exchangeName = "DirectExchangeDemo";
 
         public void Start(BrokerAppType app)
         {

@@ -6,12 +6,7 @@ namespace ConsoleHelper.Demos
 {
     public class RoutingKeyFanoutExchange
     {
-        private readonly string _exchangeName;
-
-        public RoutingKeyFanoutExchange(string exchangeName)
-        {
-            _exchangeName = exchangeName;
-        }
+        private readonly string _exchangeName = "RoutingKeyFanoutExchangeDemo";
 
         public void Start(BrokerAppType app)
         {

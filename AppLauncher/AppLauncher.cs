@@ -5,11 +5,12 @@ using ConsoleHelper;
 
 namespace AppLauncher
 {
-    partial class AppLauncher
+    public static class AppLauncher
     {
+        private const string WorkingDirectory = @"c:\Users\Brian.Wied\source\repos\MessageBrokerDemo\BrokerApp\";
+
         public static void Main()
         {
-            var workingDirectory = @"c:\Users\Brian.Wied\source\repos\MessageBrokerDemo\BrokerApp\";
             var windowManager = new WindowLayoutManager();
 
             while (true)
@@ -27,11 +28,11 @@ namespace AppLauncher
                 if (string.IsNullOrEmpty(selection) || !Enum.IsDefined(typeof(DemoAppLauncherSelection), Convert.ToInt32(selection)))
                     continue;
 
-                DemoAppLauncherSelection appSelection = Enum.Parse<DemoAppLauncherSelection>(selection);
+                var appSelection = Enum.Parse<DemoAppLauncherSelection>(selection);
 
                 if (appSelection != DemoAppLauncherSelection.Exit)
                 {
-                    windowManager.DisplayBrokerConsole(workingDirectory, appSelection);
+                    windowManager.DisplayBrokerConsole(WorkingDirectory, appSelection);
                 }
                 else
                 {

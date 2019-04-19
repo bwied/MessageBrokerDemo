@@ -6,12 +6,7 @@ namespace ConsoleHelper.Demos
 {
     public class FanoutExchange
     {
-        private readonly string _exchangeName;
-
-        public FanoutExchange(string exchangeName)
-        {
-            _exchangeName = exchangeName;
-        }
+        private readonly string _exchangeName = "FanoutExchangeDemo";
 
         public void Start(BrokerAppType app)
         {
