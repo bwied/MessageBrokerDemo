@@ -27,6 +27,7 @@ namespace ConsoleHelper
 
                 var selection = Console.ReadLine();
                 Console.Clear();
+                Console.WriteLine($"Working Directory: {workingDirectory}");
 
                 if (string.IsNullOrEmpty(selection))
                     continue;
@@ -66,6 +67,7 @@ namespace ConsoleHelper
 
         private void DisplayPublisherWindow(string workingDirectory, DemoAppLauncherSelection appSelection)
         {
+            Console.WriteLine($"Command Parameters: {appSelection.ToString()} {BrokerAppType.Publisher.ToString()}");
             var windowLayout = GetPublisherWindowLayout(appSelection);
             var windowHandle = ProcessCommand.StartProgram(workingDirectory, appSelection, BrokerAppType.Publisher, windowLayout);
             _windowHandles.Add(windowHandle);
@@ -73,6 +75,7 @@ namespace ConsoleHelper
 
         private void DisplayConsumerWindow(string workingDirectory, DemoAppLauncherSelection appSelection)
         {
+            Console.WriteLine($"Command Parameters: {appSelection.ToString()} {BrokerAppType.Consumer.ToString()}");
             var windowLayout = GetConsumerWindowLayout(appSelection);
             var windowHandle = ProcessCommand.StartProgram(workingDirectory, appSelection, BrokerAppType.Consumer, windowLayout);
             _windowHandles.Add(windowHandle);
