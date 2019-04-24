@@ -4,7 +4,7 @@ using RabbitMQ.Client;
 
 namespace ConsoleHelper.Demos
 {
-    public class FanoutExchange
+    public class FanoutExchange : IExchange
     {
         private readonly string _exchangeName = "FanoutExchangeDemo";
 
@@ -23,7 +23,7 @@ namespace ConsoleHelper.Demos
 
         private void StartRabbitMqPublisher()
         {
-            using (var exchange = new RabbitMqExchange())
+            using (var exchange = new RabbitMqProxy())
             {
                 var action = exchange.GetPublisher(_exchangeName, ExchangeType.Fanout, false, true);
                 var console = new PublisherConsole(_exchangeName, "", null);
@@ -33,7 +33,7 @@ namespace ConsoleHelper.Demos
 
         private void StartRabbitMqConsumer()
         {
-            using (var exchange = new RabbitMqExchange())
+            using (var exchange = new RabbitMqProxy())
             {
                 exchange.RegisterDynamicConsumer(_exchangeName, ExchangeType.Fanout, "", false, true);
             }

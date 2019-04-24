@@ -10,47 +10,26 @@ namespace BrokerApp
 {
     public static class Program
     {
+        private static Dictionary<DemoAppLauncherSelection, IExchange> _applicationDictionary;
+
         private static void Main(string[] args)
         {
             if (!HasValidArguments(args, out var app, out var subApp)) return;
 
+            _applicationDictionary = ApplicationDictionary.GetApplicationDictionary();
             LaunchApplication(app, subApp);
         }
 
         private static void LaunchApplication(object app, object subApp)
         {
-            switch ((DemoAppLauncherSelection)app)
+            if (_applicationDictionary.ContainsKey((DemoAppLauncherSelection)app))
             {
-                case DemoAppLauncherSelection.TutorialHelloWorld:
-                    new RabbitMqTutorial1().Start((BrokerAppType)subApp);
-                    break;
-                case DemoAppLauncherSelection.TutorialWorkQueue:
-                    new RabbitMqTutorialWorkQueues().Start((BrokerAppType)subApp);
-                    break;
-                case DemoAppLauncherSelection.FanoutExchange:
-                    new FanoutExchange().Start((BrokerAppType)subApp);
-                    break;
-                case DemoAppLauncherSelection.DirectExchange:
-                    new DirectExchange().Start((BrokerAppType)subApp);
-                    break;
-                case DemoAppLauncherSelection.RoutingKeyFanoutExchange:
-                    new RoutingKeyFanoutExchange().Start((BrokerAppType)subApp);
-                    break;
-                case DemoAppLauncherSelection.TutorialPubSub:
-                    new RabbitMqTutorialPubSub().Start((BrokerAppType)subApp);
-                    break;
-                case DemoAppLauncherSelection.TutorialRouting:
-                    new RabbitMqTutorialRouting().Start((BrokerAppType)subApp);
-                    break;
-                case DemoAppLauncherSelection.TutorialTopics:
-                    new RabbitMqTutorialTopics().Start((BrokerAppType)subApp);
-                    break;
-                case DemoAppLauncherSelection.TutorialRpc:
-                case DemoAppLauncherSelection.Exit:
-                default:
-                    Console.WriteLine("Selection not implemented. Press [enter] to return to main menu.");
-                    Console.ReadLine();
-                    break;
+                _applicationDictionary[(DemoAppLauncherSelection)app].Start((BrokerAppType)subApp);
+            }
+            else
+            {
+                Console.WriteLine("Selection not implemented. Press [enter] to return to main menu.");
+                Console.ReadLine();
             }
         }
 

@@ -6,7 +6,7 @@ using RabbitMQ.Client.Events;
 
 namespace ConsoleHelper.Demos
 {
-    public class RabbitMqTutorial1
+    public class RabbitMqTutorial1 : IExchange
     {
         public void Start(BrokerAppType app)
         {

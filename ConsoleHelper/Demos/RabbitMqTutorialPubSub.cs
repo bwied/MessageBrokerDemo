@@ -7,7 +7,7 @@ using RabbitMQ.Client.Events;
 
 namespace ConsoleHelper.Demos
 {
-    public class RabbitMqTutorialPubSub
+    public class RabbitMqTutorialPubSub : IExchange
     {
         private readonly string[] _args = new[]
             {"First message.", "Second message..", "Third message...", "Fourth message....", "Fifth message....."};

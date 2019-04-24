@@ -4,7 +4,7 @@ using RabbitMQ.Client;
 
 namespace ConsoleHelper.Demos
 {
-    public class RoutingKeyFanoutExchange
+    public class RoutingKeyFanoutExchange : IExchange
     {
         private readonly string _exchangeName = "RoutingKeyFanoutExchangeDemo";
 
@@ -23,7 +23,7 @@ namespace ConsoleHelper.Demos
 
         private void StartRabbitMqPublisher()
         {
-            using (var exchange = new RabbitMqExchange())
+            using (var exchange = new RabbitMqProxy())
             {
                 var action = exchange.GetPublisher(_exchangeName, ExchangeType.Fanout, false, true);
                 var console = new PublisherConsole(_exchangeName, "DummyRoute", null);
@@ -33,7 +33,7 @@ namespace ConsoleHelper.Demos
 
         private void StartRabbitMqConsumer()
         {
-            using (var exchange = new RabbitMqExchange())
+            using (var exchange = new RabbitMqProxy())
             {
                 exchange.RegisterDynamicConsumer(_exchangeName, ExchangeType.Fanout, "DummyRoute", false, true);
             }
