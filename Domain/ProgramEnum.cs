@@ -15,6 +15,7 @@ namespace Domain
         FanoutExchange = 7,
         DirectExchange = 8,
         RoutingKeyFanoutExchange = 9,
+        OrderServiceDemo = 10,
         Exit = 0
     }
 

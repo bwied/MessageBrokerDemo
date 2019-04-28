@@ -17,7 +17,8 @@ namespace BrokerApp
                 {DemoAppLauncherSelection.TutorialTopics, new RabbitMqTutorialTopics()},
                 {DemoAppLauncherSelection.DirectExchange, new DirectExchange()},
                 {DemoAppLauncherSelection.FanoutExchange, new FanoutExchange()},
-                {DemoAppLauncherSelection.RoutingKeyFanoutExchange, new RoutingKeyFanoutExchange()}
+                {DemoAppLauncherSelection.RoutingKeyFanoutExchange, new RoutingKeyFanoutExchange()},
+                {DemoAppLauncherSelection.OrderServiceDemo, new OrderServiceDemo() }
             };
         }
     }
