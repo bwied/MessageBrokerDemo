@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <Folder Include="Properties\" />
+	<PackageReference Update="Microsoft.NETCore.App" Version="2.1" />
   </ItemGroup>
 
 </Project>
