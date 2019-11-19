@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace OrderService
 {
-    public class RepositoryMock : IRepository<Order>
+    public class OrderRepositoryMock : IRepository<Order>
     {
         public static readonly Guid OrderId = Guid.NewGuid();
 
@@ -31,27 +31,12 @@ namespace OrderService
         {
             private static readonly Guid CustomerId = Guid.NewGuid();
 
-            public static readonly List<Order> Orders = new List<Order>()
-            {
-                new Order(){
-                    OrderId = OrderId,
-                    Customer = new OrderCustomer()
-                    {
-                        OrderId = OrderId,
-                        UserId = CustomerId,
-                        FullName = "Brian Wied",
-                        Email = "brian.wied@gmail.com"
-                    },
-                    Products = new Dictionary<Guid, int>(),
-                    Status = OrderStates.Pending
-                }
-            };
+            public static readonly List<Order> Orders = new List<Order>();
         }
 
         public void Dispose()
         {
             
         }
-
     }
 }

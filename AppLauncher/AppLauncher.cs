@@ -7,7 +7,7 @@ namespace AppLauncher
 {
     public static class AppLauncher
     {
-        private const string WorkingDirectory = @"c:\Users\Brian.Wied\source\repos\MessageBrokerDemo\BrokerApp\";
+        private const string WorkingDirectory = @"c:\Users\brian\source\repos\bwied\MessageBrokerDemo\BrokerApp\";
 
         public static void Main()
         {

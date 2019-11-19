@@ -2,16 +2,7 @@
 {
     public static class OrderStates
     {
-        public static OrderState Pending
-        {
-            get
-            {
-                return new OrderState()
-                {
-                    InventoryState = "pending"
-                };
-            }
-        }
+        public static OrderState Pending => new OrderState() {InventoryState = "pending", PaymentState = "pending", ShippingState = "pending"};
 
         public static OrderState Submitted => new OrderState() { InventoryState = "reserved", PaymentState = "info-received", ShippingState = "address-received" };
 

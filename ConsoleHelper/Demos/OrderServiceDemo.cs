@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using Domain;
 using MessageBroker;
+using Newtonsoft.Json;
 using OrderService;
 
 namespace ConsoleHelper.Demos
@@ -13,6 +15,8 @@ namespace ConsoleHelper.Demos
         private readonly string _inventoryServiceQueueName = "InventoryServiceQueue";
         private readonly string _billingServiceQueueName = "BillingServiceQueue";
         private readonly string _shippingServiceQueueName = "ShippingServiceQueue";
+        private Guid OrderId = Guid.NewGuid();
+
 
         public void Start(BrokerAppType app)
         {
@@ -29,29 +33,63 @@ namespace ConsoleHelper.Demos
 
         private void StartRabbitMqPublisher()
         {
-            using (var repo = new RepositoryMock())
+            using (var repo = new OrderRepositoryMock())
             using (var publisher = new RabbitMqPublisherAdapter<Order>(_exchangeName, "topic", durable: false, autoDelete: true))
+            using (var consumer = new RabbitMqConsumerAdapter<Product>(_exchangeName, "topic", $"{_orderServiceQueueName}.InventoryReserved", durable: false, autoDelete: true))
             {
                 while (true)
                 {
                     Console.WriteLine("Select option and press [enter]:");
                     Console.WriteLine("1. Submit Order");
+                    Console.WriteLine("2. View Order");
                     var selection = Console.ReadLine();
                     Console.Clear();
 
                     switch (selection)
                     {
                         case "1":
-                            var service = new OrderServiceCommand(repo, publisher);
-                            var order = new OrderServiceView(repo).Get(RepositoryMock.OrderId);
+                            var service = new OrderServiceCommand(repo, publisher, consumer);
+                            var order = GenerateMockOrder();
+                            service.Register();
                             service.Submit(order);
                             Console.WriteLine("Order submitted");
+                            break;
+                        case "2":
+                            order = repo.Get(OrderId);
+                            Console.WriteLine(JsonConvert.SerializeObject(order));
                             break;
                         default:
                             return;
                     }
                 }
             }
+        }
+
+        private Order GenerateMockOrder()
+        {
+            var CustomerId = Guid.NewGuid();
+
+            return new Order()
+            {
+                OrderId = OrderId,
+                Customer = new OrderCustomer()
+                {
+                    OrderId = OrderId,
+                    UserId = CustomerId,
+                    FullName = "Brian Wied",
+                    Email = "brian.wied@gmail.com"
+                },
+                Products = new List<OrderProduct>()
+                {
+                    new OrderProduct()
+                    {
+                        ProductId = ProductRepositoryMock.ProductOneId,
+                        Quantity = 3,
+                        IsReserved = false
+                    }
+                },
+                Status = OrderStates.Pending
+            };
         }
 
         private void StartRabbitMqConsumer()
@@ -67,10 +105,14 @@ namespace ConsoleHelper.Demos
             switch (selection)
             {
                 case "1":
-                    StartRabbitMqConsumer(_orderServiceQueueName);
+                    StartRabbitMqConsumer($"{_orderServiceQueueName}.log", "inventory.reserved");
                     break;
                 case "2":
-                    StartRabbitMqConsumer(_inventoryServiceQueueName, "order.submitted");
+                    StartRabbitMqConsumer($"{_inventoryServiceQueueName}.log", "order.submitted");
+                    var inventoryService = new InventoryService(new ProductRepositoryMock(),
+                        new RabbitMqPublisherAdapter<Product>(_exchangeName, "topic", durable: false, autoDelete: true),
+                        new RabbitMqConsumerAdapter<Order>(_exchangeName, "topic", $"{_inventoryServiceQueueName}.OrderSubmitted", durable: false, autoDelete: true));
+                    inventoryService.Register();
                     break;
                 case "3":
                     StartRabbitMqConsumer(_billingServiceQueueName, "order.submitted");
